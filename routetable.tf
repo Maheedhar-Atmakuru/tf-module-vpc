@@ -12,6 +12,14 @@ resource "aws_route_table" "public_rt" {
   }
 }
 
+resource "aws_route_table_association" "public_subnet_rt_association" {
+    count = length(aws_subnet.public_subnet.*.id)
+  subnet_id      = element(aws_subnet.public_subnet.*.id,count_index)
+  route_table_id = 
+}
+
+
+
 resource "aws_route_table" "private_rt" {
   vpc_id = aws_vpc.main.id
 
@@ -24,4 +32,10 @@ resource "aws_route_table" "private_rt" {
   tags = {
     Name = "roboshop-${var.ENV}-private-rt"
   }
+}
+
+resource "aws_route_table_association" "private_subnet_rt_association" {
+    count = length(aws_subnet.private_subnet.*.id)
+  subnet_id      = element(aws_subnet.private_subnet.*.id,count_index)
+  route_table_id = 
 }
